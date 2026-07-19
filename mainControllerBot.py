@@ -1,5 +1,6 @@
+import signal
 import sys
-import time
+import threading
 from pathlib import Path
 
 from shared.bot_runner import PROJECT_ROOT, load_env, load_bot_config, start_bot_thread
@@ -28,20 +29,27 @@ def main():
         sys.exit(1)
 
     print(f"Starting {len(bot_dirs)} bot(s)...")
-    threads = []
+    threads: list[threading.Thread] = []
+    stop_event = threading.Event()
 
     for bot_dir in bot_dirs:
         config = load_bot_config(bot_dir)
-        print(f"  → {config['name']} ({bot_dir.name})")
-        threads.append(start_bot_thread(bot_dir))
+        print(f"  \u2192 {config['name']} ({bot_dir.name})")
+        threads.append(start_bot_thread(bot_dir, stop_event))
 
     print("\nAll bots started. Press Ctrl+C to stop.\n")
 
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\nShutting down...")
+    def request_stop(*_args):
+        stop_event.set()
+
+    # signal handlers must be registered in the main thread.
+    signal.signal(signal.SIGINT, request_stop)
+    signal.signal(signal.SIGTERM, request_stop)
+
+    stop_event.wait()
+    print("\nShutting down...")
+    for thread in threads:
+        thread.join(timeout=10)
 
 
 if __name__ == "__main__":
