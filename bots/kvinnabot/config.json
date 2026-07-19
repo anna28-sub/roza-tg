@@ -1,0 +1,8 @@
+{
+  "name": "kvinnabot",
+  "token_env": "BOT_TOKEN_2",
+  "substitutions": {
+    "CHANNEL_LINK": "CHANNEL_LINK_2"
+  },
+  "env_vars": ["CHANNEL_LINK_2"]
+}

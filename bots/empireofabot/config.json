@@ -1,0 +1,8 @@
+{
+  "name": "empireofabot",
+  "token_env": "BOT_TOKEN_1",
+  "substitutions": {
+    "CHANNEL_LINK": "CHANNEL_LINK_1"
+  },
+  "env_vars": ["CHANNEL_LINK_1"]
+}

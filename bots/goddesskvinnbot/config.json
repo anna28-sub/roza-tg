@@ -1,0 +1,8 @@
+{
+  "name": "goddesskvinnbot",
+  "token_env": "BOT_TOKEN_3",
+  "substitutions": {
+    "CHANNEL_LINK": "CHANNEL_LINK_3"
+  },
+  "env_vars": ["CHANNEL_LINK_3"]
+}
